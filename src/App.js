@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+//#d8f3ff 60% ,#a0d8b3 30% , #f4a300  10%
 
+import React from 'react';
+import AppRoutes from './routes/AppRoutes';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+//import SearchBar from './components/SearchBar';
+
+import { Box } from '@mui/material';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+      <Box sx={{ 
+          backgroundColor: '#d8f3ff', 
+          minHeight: '100vh',
+          minWidth: '100%',
+          color: 'black',
+          overflowX: 'hidden',
+          mx: 'auto',
+        }}> 
+        <Header/> 
+        {/* <SearchBar/> */}
+        <AppRoutes/>
+        <Footer/> 
+
+        </Box>  
+      </div>
+    </Router>
+
   );
 }
 
