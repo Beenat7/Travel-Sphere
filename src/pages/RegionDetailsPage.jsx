@@ -13,46 +13,28 @@ const RegionDetailsPage = () => {
   useEffect(() => {
     const fetchRegionData = async () => {
       setLoading(true);
-
       try {
-        // Fetch region details and associated countries from GeoNames
-        const geoNamesResponse = await axios.get(`http://api.geonames.org/searchJSON`, {
-          params: {
-            q: regionName,
-            featureCode: 'RGN',
-            maxRows: 1,
-            username: process.env.REACT_APP_GEONAMES_USERNAME,
-          },
-        });
+        // Fetch region details and countries from REST Countries API
+        const regionResponse = await axios.get(`https://restcountries.com/v3.1/region/${regionName}`);
+        const countryData = regionResponse.data.slice(0, 6); // Get first 6 countries
 
-        const regionData = geoNamesResponse.data.geonames[0]; // Use the first region result
-        if (regionData) {
-          setRegionDetails({
-            name: regionData.name || 'Unknown',
-            population: regionData.population || 'Unknown',
-            latitude: regionData.lat,
-            longitude: regionData.lng,
-          });
+        setCountries(
+          countryData.map(country => ({
+            name: country.name.common,
+            flag: country.flags.svg,
+            /* population: country.population, */
+            capital: country.capital?.[0] || 'Unknown',
+          }))
+        );
 
-          // Fetch countries for the region
-          const countriesResponse = await axios.get(`http://api.geonames.org/searchJSON`, {
-            params: {
-              q: regionData.name,
-              featureCode: 'PCLI', // Feature code for countries
-              maxRows: 3, // Limit to 3 countries
-              username: process.env.REACT_APP_GEONAMES_USERNAME,
-            },
-          });
-
-          setCountries(countriesResponse.data.geonames.map((country) => country.name));
-        } else {
-          console.warn(`No region details found for: ${regionName}`);
-          setRegionDetails(null);
-        }
-      } catch (error) {
+       
+      }catch (error) {
         console.error('Error fetching region details:', error.response?.data || error.message);
         setRegionDetails(null);
       }
+
+     
+
 
       try {
         // Fetch region image from Unsplash
@@ -119,21 +101,19 @@ const RegionDetailsPage = () => {
             }}
           ></Box>
 
-          <Typography
-            variant="h4"
-            sx={{
-              zIndex: 2,
-              position: 'absolute',
-              top: '15px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              color: '#F4A300',
-              textAlign: 'center',
-              fontWeight: 'bold',
-              fontSize: { xs: '1rem', sm: '1.5rem', md: '2.5rem' },
-              padding: '0 20px',
-            }}
-          >
+                <Typography
+                 variant="h4"
+                 sx={{
+                   zIndex: 2,
+                   color: '#F4A300',
+                   textAlign: 'center',
+                   fontWeight: 'bold',
+                   position: 'absolute', // Ensure it stays fixed
+                   top: '10%', // Vertically center
+                   left: '50%', // Horizontally center
+                   transform: 'translate(-50%, -50%)', // Fine-tuning the centering
+                 }}
+               >
             Discover {regionName}
           </Typography>
 
@@ -144,37 +124,32 @@ const RegionDetailsPage = () => {
             sx={{
               zIndex: 2,
               width: '70%',
+              p:3,
               justifyContent: 'space-around',
             }}
           >
-            {/* Region Details Card */}
-            {regionDetails && (
-              <Grid item xs={12} sm={6} md={5}>
-                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ mb: 2 }}>
-                      Region Information
-                    </Typography>
-                    <Typography>Population: {regionDetails.population}</Typography>
-                    <Typography>Latitude: {regionDetails.latitude}</Typography>
-                    <Typography>Longitude: {regionDetails.longitude}</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            )}
+   
 
             {/* Countries Card */}
             {countries.length > 0 && (
-              <Grid item xs={12} sm={6} md={5}>
+              <Grid item xs={12} sm={12} md={8}>
                 <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ mb: 2 }}>
-                      Countries in {regionName}
-                    </Typography>
-                    {countries.map((country, index) => (
-                      <Typography key={index}>{country}</Typography>
-                    ))}
-                  </CardContent>
+                <CardContent>
+                <Typography variant="h6">Countries in {regionName}</Typography>
+                <Grid container spacing={2}>
+                  {countries.map((country, index) => (
+                    <Grid item xs={6} sm={4} key={index}>
+                      <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+                        <img src={country.flag} alt={country.name} width={50} height={30} />
+                        <Typography>{country.name}</Typography>
+                        <Typography variant="body2">Capital: {country.capital}</Typography>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </CardContent>
+                  
+                  
                 </Card>
               </Grid>
             )}

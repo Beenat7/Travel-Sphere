@@ -10,6 +10,8 @@ const CountryDetailsPage = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
 
+
+
   useEffect(() => {
     const fetchCountryData = async () => {
       setLoading(true);
@@ -33,21 +35,19 @@ const CountryDetailsPage = () => {
       }
 
       try {
-        // Fetch country details from GeoNames
-        const geoNamesResponse = await axios.get(`http://api.geonames.org/searchJSON`, {
-          params: {
-            q: countryName,
-            maxRows: 1,
-            featureCode: 'PCLI', // Country-level data
-            username: process.env.REACT_APP_GEONAMES_USERNAME,
-          },
-        });
-        const countryData = geoNamesResponse.data.geonames[0];
+        // Fetch country details from Rest Countries API
+        const restCountriesResponse = await axios.get(
+          `https://restcountries.com/v3.1/name/${countryName}`
+        );
+        const countryData = restCountriesResponse.data[0];
         if (countryData) {
           setCountryDetails({
-            countryName: countryData.countryName,
-            population: countryData.population || 'Unknown',
-            capital: countryData.adminName1 || 'Unknown',
+            countryName: countryData.name.common,
+            population: countryData.population.toLocaleString() || 'Unknown',
+            capital: countryData.capital ? countryData.capital[0] : 'Unknown',
+            timeZone: countryData.timezones ? countryData.timezones[0] : 'Unknown',
+            callingCode: countryData.idd.root + (countryData.idd.suffixes ? countryData.idd.suffixes[0] : ''),
+            flag: countryData.flags.png,
           });
         } else {
           console.warn(`No details found for: ${countryName}`);
@@ -82,6 +82,10 @@ const CountryDetailsPage = () => {
     fetchCountryData();
   }, [countryName]);
 
+const sunrise = weather?.sys?.sunrise ? new Date(weather.sys.sunrise * 1000).toLocaleTimeString() : "N/A";
+const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLocaleTimeString() : "N/A";
+
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -103,6 +107,7 @@ const CountryDetailsPage = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            
           }}
         >
           <Box
@@ -122,6 +127,10 @@ const CountryDetailsPage = () => {
               color: '#F4A300',
               textAlign: 'center',
               fontWeight: 'bold',
+              position: 'absolute', // Ensure it stays fixed
+              top: '10%', // Vertically center
+              left: '50%', // Horizontally center
+              transform: 'translate(-50%, -50%)', // Fine-tuning the centering
             }}
           >
             Explore {countryName}
@@ -130,12 +139,19 @@ const CountryDetailsPage = () => {
             {weather && (
               <Grid item xs={12} sm={6} md={5}>
                 <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+
+                  
                   <CardContent>
                     <Typography variant="h6" sx={{ mb: 2 }}>
                       Weather
                     </Typography>
                     <Typography>Temperature: {weather.main.temp}°C</Typography>
                     <Typography>Condition: {weather.weather[0].description}</Typography>
+                    <Typography>Humidity: {weather.main.humidity}%</Typography>
+                    <Typography>Wind Speed: {weather.wind.speed} m/s</Typography> 
+                    <Typography>Pressure: {weather.main.pressure} hPa</Typography>
+                    <Typography>Sunrise: {sunrise}</Typography>
+                    <Typography>Sunset: {sunset}</Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -150,6 +166,9 @@ const CountryDetailsPage = () => {
                     <Typography>Country: {countryDetails.countryName}</Typography>
                     <Typography>Population: {countryDetails.population}</Typography>
                     <Typography>Capital: {countryDetails.capital}</Typography>
+                    <Typography>Time Zone: {countryDetails.timeZone}</Typography>
+                    <Typography>Calling Code: {countryDetails.callingCode}</Typography>
+                    <Typography sx={{ pt:2}}>Flag : <img src={countryDetails.flag} alt="Country Flag" style={{ width:"60px" , }}  /></Typography>
                   </CardContent>
                 </Card>
               </Grid>

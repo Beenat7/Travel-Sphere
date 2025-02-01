@@ -3,12 +3,14 @@ import { Grid, Card, CardMedia, CardContent, Typography, Box } from '@mui/materi
 import axios from 'axios';
 
 const regionsList = [
-  { region: 'East Africa', headquarter: 'Addis Ababa' },
-  { region: 'South Asia', headquarter: 'New Delhi' },
-  { region: 'Middle East', headquarter: 'Dubai' },
-  { region: 'Europe', headquarter: 'Brussels' },
-  { region: 'North America', headquarter: 'Washington, D.C.' },
-  { region: 'Oceania', headquarter: 'Sydney' },
+ /*  { region: 'East Africa', headquarter: 'Addis Ababa' },*/
+ { region: 'Europe', headquarter: 'Brussels' },
+ { region: 'North America', headquarter: 'Washington, D.C.' },
+ { region: 'Oceania', headquarter: 'Sydney' },
+  
+  { region: 'Africa', headquarter: 'Addis Ababa' },
+  { region: 'Asia', headquarter: 'Beijing' }, 
+  { region: 'South America', headquarter: 'Buenos Aires' },
 ];
 
 const Regions = ({ onRegionClick }) => {
