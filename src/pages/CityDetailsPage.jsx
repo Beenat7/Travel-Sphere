@@ -33,22 +33,21 @@ const CityDetailsPage = () => {
       }
 
       try {
-        // Fetch city details from GeoNames
-        const geoNamesResponse = await axios.get(`http://api.geonames.org/searchJSON`, {
+        // Fetch city details from OpenCage Geocoder
+        const openCageResponse = await axios.get(`https://api.opencagedata.com/geocode/v1/json`, {
           params: {
             q: cityName,
-            maxRows: 1,
-            username: process.env.REACT_APP_GEONAMES_USERNAME,
+            key: process.env.REACT_APP_OPENCAGE_API_KEY,
           },
         });
-        const cityData = geoNamesResponse.data.geonames[0]; // Use the first city result
+        
+        const cityData = openCageResponse.data.results[0];
         if (cityData) {
           setCityDetails({
-            countryName:cityData.countryName || 'unknown',
-            population: cityData.population || 'Unknown',
-            latitude: cityData.lat,
-            longitude: cityData.lng,
-            
+            countryName: cityData.components.country || 'Unknown',
+            currency: cityData.annotations.currency.name || 'Unknown',
+            callingCode: cityData.annotations.callingcode || 'unknown',
+            timezone: cityData.annotations.timezone.offset_string || 'Unknown',
           });
         } else {
           console.warn(`No city details found for: ${cityName}`);
@@ -87,6 +86,10 @@ const CityDetailsPage = () => {
 
     fetchCityData();
   }, [cityName]);
+const sunrise = weather?.sys?.sunrise ? new Date(weather.sys.sunrise * 1000).toLocaleTimeString() : "N/A";
+const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLocaleTimeString() : "N/A";
+
+
 
   if (loading) {
     return (
@@ -164,12 +167,12 @@ const CityDetailsPage = () => {
                     <Typography variant= "h6"  sx={{ mb: 2
                     
                   }}>
-                      Current Weather
+                       Weather
                     </Typography>
                     <Typography>Temperature: {weather.main.temp}°C</Typography>
-                    <Typography>Condition: {weather.weather[0].description}</Typography>
-                    <Typography>Humidity: {weather.main.humidity}%</Typography>
-                    <Typography>Wind Speed: {weather.wind.speed} m/s</Typography>
+                    <Typography>Condition: {weather.weather[0].description}</Typography>  
+                    <Typography>Sunrise: {sunrise}</Typography>
+                    <Typography>Sunset: {sunset}</Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -186,9 +189,9 @@ const CityDetailsPage = () => {
                       City Information
                     </Typography>
                     <Typography>Country: {cityDetails.countryName}</Typography>
-                    <Typography>Population: {cityDetails.population}</Typography>
-                    <Typography>Latitude: {cityDetails.latitude}</Typography>
-                    <Typography>Longitude: {cityDetails.longitude}</Typography>
+                    <Typography>currency: {cityDetails.currency}</Typography>
+                    <Typography>callingCode: {cityDetails.callingCode}</Typography>
+                    <Typography>Time Zone: {cityDetails.timezone}</Typography>
                     
                   </CardContent>
                 </Card>
