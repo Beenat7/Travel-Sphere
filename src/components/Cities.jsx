@@ -43,7 +43,7 @@ const Cities = ({ onCityClick }) => {
   }, []);
 
   return (
-    <Grid container spacing={3} sx={{ mt: 4 }}>
+    <Grid container spacing={3} sx={{ mt: 4}}>
       {cities.map((city, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
           <Card

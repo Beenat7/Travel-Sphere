@@ -105,7 +105,7 @@ const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLoca
       {image && (
         <Box
           sx={{
-            height: '80vh',
+            height: '100vh',
             backgroundImage: `url(${image.urls.regular})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -138,9 +138,10 @@ const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLoca
               color: '#F4A300',
               textAlign: 'center',
               fontWeight: 'bold',
-              fontSize: { xs: '1rem', sm: '1.5rem', md: '2.5rem' }, // Responsive font size
-              padding: '0 20px',
-              flexDirection: { sm: 'row' },
+              fontSize: { xs: '1.3rem', sm: '1.8rem', md: '2.5rem' }, // Responsive font size
+              margin: '10px 20px',
+              
+             // flexDirection: { sm: 'row' },
             }}
             >
             Explore {cityName}
@@ -153,8 +154,11 @@ const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLoca
             spacing={2}
             sx={{
               zIndex: 2,
-              width: '70%',
-              justifyContent: 'space-around',
+              width: {xs:'90%',sm:'85%',md:'85%'},
+              //justifyContent: 'space-around',
+              justifyContent: 'center',
+              //position: 'relative', 
+              mt:'20px',
             }}
           >
 
@@ -162,7 +166,7 @@ const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLoca
             {/* Weather Card */}
             {weather && (
               <Grid item xs={12} sm={6} md={5} >
-                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', height: '200px', overflow: 'auto' , }}>
                   <CardContent>
                     <Typography variant= "h6"  sx={{ mb: 2
                     
@@ -181,7 +185,7 @@ const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLoca
             {/* GeoNames Card */}
             {cityDetails && (
               <Grid item xs={12} sm={6} md={5}>
-                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', height: '200px', overflow: 'auto' , }}>
                   <CardContent>
                     <Typography variant="h6" sx={{ mb: 2
           

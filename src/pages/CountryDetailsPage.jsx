@@ -99,7 +99,7 @@ const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLoca
       {image && (
         <Box
           sx={{
-            height: '80vh',
+            height: '100vh',
             backgroundImage: `url(${image.urls.regular})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -124,21 +124,30 @@ const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLoca
             variant="h4"
             sx={{
               zIndex: 2,
+              position: 'absolute',
+              top: '15px', // 3px margin from top
+              left: '50%',
+              transform: 'translateX(-50%)',
               color: '#F4A300',
               textAlign: 'center',
               fontWeight: 'bold',
-              position: 'absolute', // Ensure it stays fixed
-              top: '10%', // Vertically center
-              left: '50%', // Horizontally center
-              transform: 'translate(-50%, -50%)', // Fine-tuning the centering
+              fontSize: { xs: '1rem', sm: '1.5rem', md: '2rem' }, // Responsive font size
+              margin: '10px 20px',
             }}
           >
             Explore {countryName}
           </Typography>
-          <Grid container spacing={2} sx={{ zIndex: 2, width: '70%', justifyContent: 'space-around' }}>
+          <Grid container spacing={2} sx={{ 
+            zIndex: 2,
+            width: {xs:'90%',sm:'85%',md:'85%'},
+            //justifyContent: 'space-around',
+            justifyContent: 'center',
+            mt:'20px',
+            //position: 'relative',  
+            }}>
             {weather && (
               <Grid item xs={12} sm={6} md={5}>
-                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)',  height: '250px', overflow: 'auto' , }}>
 
                   
                   <CardContent>
@@ -158,7 +167,7 @@ const sunset = weather?.sys?.sunset ? new Date(weather.sys.sunset * 1000).toLoca
             )}
             {countryDetails && (
               <Grid item xs={12} sm={6} md={5}>
-                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)',  height: '250px', overflow: 'auto' }}>
                   <CardContent>
                     <Typography variant="h6" sx={{ mb: 2 }}>
                       Details

@@ -79,7 +79,7 @@ const RegionDetailsPage = () => {
       {image && (
         <Box
           sx={{
-            height: '80vh',
+            height: '100vh',
             backgroundImage: `url(${image.urls.regular})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -104,14 +104,16 @@ const RegionDetailsPage = () => {
                 <Typography
                  variant="h4"
                  sx={{
-                   zIndex: 2,
-                   color: '#F4A300',
-                   textAlign: 'center',
-                   fontWeight: 'bold',
-                   position: 'absolute', // Ensure it stays fixed
-                   top: '10%', // Vertically center
-                   left: '50%', // Horizontally center
-                   transform: 'translate(-50%, -50%)', // Fine-tuning the centering
+                  zIndex: 2,
+                  position: 'absolute',
+                  top: '15px', // 3px margin from top
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  color: '#F4A300',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: { xs: '1.3rem', sm: '1.8rem', md: '2.5rem' }, // Responsive font size
+                  margin: '10px 20px',
                  }}
                >
             Discover {regionName}
@@ -123,17 +125,18 @@ const RegionDetailsPage = () => {
             spacing={2}
             sx={{
               zIndex: 2,
-              width: '70%',
+              width: {xs:'90%',sm:'90%',md:'95%'},
               p:3,
-              justifyContent: 'space-around',
+              //justifyContent: 'space-around',
+              justifyContent: 'center',
             }}
           >
    
 
             {/* Countries Card */}
             {countries.length > 0 && (
-              <Grid item xs={12} sm={12} md={8}>
-                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+              <Grid item xs={12} sm={12} md={6}>
+                <Card sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)',  height: '350px', overflow: 'auto' , }}>
                 <CardContent>
                 <Typography variant="h6">Countries in {regionName}</Typography>
                 <Grid container spacing={2}>

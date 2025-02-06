@@ -24,6 +24,14 @@ const HomePage = () => {
  const handleSearch = async (name) => {
   setCityName(name);
   setShowPopular(false);
+  // Determine route based on selected category
+  if (selectedCategory  === 'City') {
+    navigate(`/city/${name}`);
+  } else if (selectedCategory  === 'Country') {
+    navigate(`/country/${name}`);
+  } else if (selectedCategory  === 'Region') {
+    navigate(`/region/${name}`);
+  }
   try {
     // Fetch images for the given area
     const response = await axios.get('https://api.unsplash.com/search/photos', {
@@ -69,7 +77,7 @@ const handleCategoryChange = (newCategory) => {
   return (
     <Box sx={{ padding: '20px' }}>
        <SearchBar
-        onSearch={handleSearch}
+        onSearch={(name) => handleSearch(name, selectedCategory)} 
         suggestions={suggestions}
         onFetchSuggestions={handleFetchSuggestions}
         selectedCategory={selectedCategory}
@@ -80,8 +88,9 @@ const handleCategoryChange = (newCategory) => {
         <>
           <PopularDestinations onCityClick={handleCityClick} />
           <Countries onCountryClick={handleCountryClick} />
-          <Regions onRegionClick={handleRegionClick} />
           <Cities onCityClick={handleCityClick} />
+          <Regions onRegionClick={handleRegionClick} />
+          
         </>
       )}
       

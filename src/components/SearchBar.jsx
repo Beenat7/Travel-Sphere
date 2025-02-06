@@ -77,6 +77,11 @@ const SearchBar = ({
         maxWidth: '150px',
         backgroundColor: 'white',
         borderRadius: 5,
+        //border: '2px solid #f4a300', // Add border color
+        '& .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#f4a300 !important', // Ensure border color is applied
+        },
+       
       }}
     >
       <MenuItem value="Country">Country</MenuItem>
